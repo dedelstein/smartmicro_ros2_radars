@@ -15,6 +15,9 @@ RUN apt-get update && apt-get install -y \
     ros-foxy-rviz-common \
     ros-foxy-rviz-default-plugins \
     ros-foxy-rviz-rendering \
+    can-utils \
+    iproute2 \
+    tmux \
     wget
 
 WORKDIR /code

@@ -1,0 +1,1 @@
+docker run -it -v .:/code --network ros_network --name driver_1 -e ROS_MASTER_URI=http://172.19.0.3:11311 umrr-ros:latest bash

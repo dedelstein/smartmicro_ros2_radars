@@ -1,4 +1,58 @@
-# ROS2 smartmicro radar driver
+# ROS2 smartmicro radar driver, modified for ISEAuto Lab
+
+This is a folder with a pre-built ROS package to run a DRVEGRD 152 sensor from a docker image  
+
+Simple steps:  
+
+## Make sure CAN is up and set baud rate
+```bash
+sudo ip link set can0 up type can bitrate 500000 dbitrate 2000000 fd on fd-non-iso on
+```
+
+## Build and launch docker image
+
+Dockerfile should be fine, just  
+```bash
+docker build . -t umrr-ros:latest
+docker run -it --rm -v .:/code --network=host --name driver_1 -e ROS_MASTER_URI=http://172.19.0.3:11311 umrr-ros:latest bash
+```
+
+## In docker image, lauch sensor node
+
+```bash
+ros2 launch umrr_ros2_driver radar.launch.py
+```
+
+Only real differences with the default package from smartmicro is in the radar.launch.py and smart_micro.params.yaml  
+smart_micro.params.yaml replaces radar.params.template.yaml.  To use in rviz you need some mapping from umrr to another frame.
+
+contains the following configuration:
+```yaml
+ adapters:
+      adapter_0:
+          hw_type: "can"
+          hw_dev_id: 2
+          hw_iface_name: "can0"
+          baudrate: 500000
+    master_inst_serial_type: "can_based"
+    master_data_serial_type: "can_based"
+    sensors:
+      sensor_0:
+          link_type: "can"
+          model: "umrr9d_can_v1_5_0"
+          id: 900
+          dev_id: 2
+          port: 55555
+          uifname: "umrr9d_t152_automotive"
+          uifmajorv: 1
+          uifminorv: 5
+          uifpatchv: 0
+          frame_id: "umrr"
+          # Specify the history size.
+          history_size: 10
+```
+
+# SmartMicro Info Below
 
 [![Build and test](https://github.com/smartmicro/smartmicro_ros2_radars/actions/workflows/dockerbuild.yml/badge.svg)](https://github.com/smartmicro/smartmicro_ros2_radars/actions/workflows/dockerbuild.yml)
 

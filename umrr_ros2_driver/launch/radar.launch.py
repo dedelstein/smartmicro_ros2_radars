@@ -29,7 +29,7 @@ def generate_launch_description():
     """Generate the launch description."""
        
     radar__params = os.path.join(
-           get_package_share_directory(PACKAGE_NAME), 'param/radar.params.template.yaml')
+           get_package_share_directory(PACKAGE_NAME), 'param/smart_micro.params.yaml')
     radar_node = Node(
         package=PACKAGE_NAME,
         executable='smartmicro_radar_node_exe',
